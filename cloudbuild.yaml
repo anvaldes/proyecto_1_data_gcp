@@ -1,0 +1,21 @@
+steps:
+# Paso 1: Build de imagen Docker personalizada
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/Proyecto-1/gcf-artifacts/read-dataframe', '.']
+
+# Paso 2: Push al Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-central1-docker.pkg.dev/Proyecto-1/gcf-artifacts/read-dataframe']
+
+# Paso 3: Deploy de la Cloud Function desde la imagen
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+    - functions
+    - deploy
+    - read_dataframe
+    - --region=us-central1
+    - --runtime=custom
+    - --trigger-http
+    - --allow-unauthenticated
+    - --docker-image=us-central1-docker.pkg.dev/Proyecto-1/gcf-artifacts/read-dataframe
