@@ -7,13 +7,15 @@ from data_pipeline import run_data_pipeline
 
 app = Flask(__name__)
 
+print("✔ Flask app is loading...")
+
 @app.route("/", methods=["GET"])
 def pipeline():
     year = request.args.get("year", "2025")
     month = request.args.get("month", "06")
     bucket_name = "proyecto_1_ml"
 
-    client = storage.Client()
+    client = storage.Client(project="proyecto-1-461620")
 
     print(f"Iniciando pipeline para {year}-{month}")
 
