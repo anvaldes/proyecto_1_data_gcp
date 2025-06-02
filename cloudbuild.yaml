@@ -25,8 +25,8 @@ steps:
           --allow-unauthenticated \
           --project=proyecto-1-461620
 
-images:
-  - us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe:latest
+#images:
+#  - us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe:latest
 
 options:
   logging: CLOUD_LOGGING_ONLY
