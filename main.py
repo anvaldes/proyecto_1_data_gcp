@@ -52,4 +52,4 @@ def pipeline():
         blob.upload_from_string(csv_data, content_type='text/csv')
         print(f"Subido: {blob_path}")
 
-    return f"YESSS! Pipeline completado y datasets guardados para {year}-{month}", 200
+    return f"Pipeline completado y datasets guardados para {year}-{month}", 200
