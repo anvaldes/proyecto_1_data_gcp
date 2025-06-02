@@ -1,5 +1,13 @@
 steps:
-  # Paso único: build y push directamente con buildx
+  # Paso 0: Configurar credenciales de Artifact Registry
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+  # Paso 1: único: build y push directamente con buildx
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args:
