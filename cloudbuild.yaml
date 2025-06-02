@@ -2,7 +2,7 @@ steps:
   # Paso 1: Build & push usando Kaniko
   - name: gcr.io/kaniko-project/executor:latest
     args:
-      - "--destination=us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe"
+      - "--destination=us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe:latest"
       - "--context=."
       - "--dockerfile=Dockerfile"
       - "--verbosity=info"
@@ -14,14 +14,15 @@ steps:
       - -c
       - |
         gcloud run deploy read-dataframe \
-          --image=us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe \
+          --image=us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe:latest \
           --platform=managed \
           --region=us-central1 \
           --allow-unauthenticated \
           --project=proyecto-1-461620
 
 images:
-  - us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe
+  - us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe:latest
 
 options:
   logging: CLOUD_LOGGING_ONLY
+
