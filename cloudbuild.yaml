@@ -1,26 +1,17 @@
 steps:
-  # Paso 1: Build de imagen estándar (funciona bien en Cloud Build)
-  - name: 'gcr.io/cloud-builders/docker'
+  # Paso 1: Build & push usando Kaniko
+  - name: gcr.io/kaniko-project/executor:latest
     args:
-      [
-        'build',
-        '-t', 'us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe',
-        '.'
-      ]
+      - "--destination=us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe"
+      - "--context=."
+      - "--dockerfile=Dockerfile"
+      - "--verbosity=info"
 
-  # Paso 2: Push a Artifact Registry (funciona si el SA tiene permisos, como ya lo configuraste)
-  - name: 'gcr.io/cloud-builders/docker'
+  # Paso 2: Despliegue en Cloud Run
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
     args:
-      [
-        'push',
-        'us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe'
-      ]
-
-  # Paso 3: Despliegue en Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
+      - -c
       - |
         gcloud run deploy read-dataframe \
           --image=us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe \
