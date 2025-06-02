@@ -34,6 +34,8 @@ steps:
           --allow-unauthenticated \
           --project=proyecto-1-461620
 
-# Define la imagen como un artifact
 images:
   - us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe
+
+options:
+  logging: CLOUD_LOGGING_ONLY
