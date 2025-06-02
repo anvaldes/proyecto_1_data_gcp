@@ -1,27 +1,16 @@
 steps:
-  # Paso 1: Build de la imagen con buildx para linux/amd64
+  # Paso único: build y push directamente con buildx
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         docker buildx create --use
-        docker buildx build --platform linux/amd64 -t read-dataframe . --load
+        docker buildx build --platform linux/amd64 \
+          -t us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe \
+          --push .
 
-  # Paso 2: Etiquetar la imagen
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'tag'
-      - 'read-dataframe'
-      - 'us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe'
-
-  # Paso 3: Subir imagen a Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe'
-
-  # Paso 4: Desplegar en Cloud Run
+  # Paso 2: Desplegar en Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
