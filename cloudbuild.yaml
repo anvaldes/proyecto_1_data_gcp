@@ -23,7 +23,8 @@ steps:
           --platform=managed \
           --region=us-central1 \
           --allow-unauthenticated \
-          --project=proyecto-1-461620
+          --project=proyecto-1-461620 \
+          --service-account=cloudbuild-user-managed-sa@proyecto-1-461620.iam.gserviceaccount.com
 
 #images:
 #  - us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe:latest
