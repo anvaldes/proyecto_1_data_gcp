@@ -1,24 +1,22 @@
 steps:
-  # Paso 0: Configurar credenciales de Artifact Registry
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
-
-  # Paso 1: único: build y push directamente con buildx
+  # Paso 1: Build de imagen estándar (funciona bien en Cloud Build)
   - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
     args:
-      - '-c'
-      - |
-        docker buildx create --use
-        docker buildx build --platform linux/amd64 \
-          -t us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe \
-          --push .
+      [
+        'build',
+        '-t', 'us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe',
+        '.'
+      ]
 
-  # Paso 2: Desplegar en Cloud Run
+  # Paso 2: Push a Artifact Registry (funciona si el SA tiene permisos, como ya lo configuraste)
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'us-central1-docker.pkg.dev/proyecto-1-461620/my-functions-repo/read-dataframe'
+      ]
+
+  # Paso 3: Despliegue en Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
