@@ -7,7 +7,12 @@ steps:
       - "--dockerfile=Dockerfile"
       - "--verbosity=info"
 
-  # Paso 2: Despliegue en Cloud Run
+  # Paso 2: Esperar antes de desplegar
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args: ["-c", "echo 'Esperando 20 segundos para asegurar disponibilidad de imagen...'; sleep 20"]
+
+  # Paso 3: Despliegue en Cloud Run
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: bash
     args:
@@ -25,4 +30,3 @@ images:
 
 options:
   logging: CLOUD_LOGGING_ONLY
-
